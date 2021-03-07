@@ -39,6 +39,8 @@
     <div>
         <?php
         $files = [];
+        $joinedJsonArray = [];
+        $csv = [];
         foreach ($targets as $tgt) {
             $tgtDir = $cwd . '/' . $tgt;
             if ($handle = opendir($tgtDir)) {
@@ -53,14 +55,31 @@
             asort($files[$tgt], SORT_NUMERIC);
         }
         foreach ($files as $key => $ary) {
+            $joinedJsonArray[$key] = [];
+            $csv[$key] = '';
             foreach ($ary as $file) {
                 $tgtFile = $cwd . '/' . $key . '/' . $file;
-                echo('<p>Processing "' . $key . '" ->' . $file . '</p>');
                 $contents = file_get_contents($tgtFile);
                 $json = mb_convert_encoding($contents, 'UTF8');
                 $jsonarr = json_decode($json, true);
+                $joinedJsonArray[$key] += $jsonarr;
+                var_dump($jsonarr);
+                echo('<br>');
+                /*
+                $filename = $cwd . '/' . $key . '.csv';
+                $fp = fopen($filename, 'w');
+                $line = array();
+                foreach ($joinedJsonArray[$key] as $jkey => $jary) {
+                    foreach ($jary as $ckey => $cval) {
+                        $line[] = $cval;
+                    }
+                    fputcsv($fp, $line);
+                }
+                fclose($fp);
+                */
             }
         }
+        echo("finished");
         ?>
     </div>
 </body>
