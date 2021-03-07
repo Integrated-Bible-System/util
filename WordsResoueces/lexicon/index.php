@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Modufy lexicons</title>
+    <title>Modify lexicons</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSS Framework Milligram-->
@@ -16,6 +16,53 @@
 </head>
 
 <body>
+    <div>
+        <h1>Modify lexicons JSON files</h1>
+    </div>
+    <div>
+        <?php
+        $cwd = getcwd();
+        ?>
+        <h2>本アプリ実行PATH</h2>
+        <p><?php echo($cwd);?></p>
+        <?php
+        $targets = array();
+        $tagetDirs = array();
+        $files = scandir($cwd);
+        foreach ($files as $val) {
+            if ($val !== '.' && $val !== '..' && is_dir($val)) {
+                array_push($targets, $val);
+            }
+        }
+        ?>
+    </div>
+    <div>
+        <?php
+        $files = [];
+        foreach ($targets as $tgt) {
+            $tgtDir = $cwd . '/' . $tgt;
+            if ($handle = opendir($tgtDir)) {
+                $tgtArray = array();
+                while (false !== ($entry = readdir($handle))) {
+                    if ($entry != "." && $entry != "..") {
+                        array_push($tgtArray, $entry);
+                    }
+                }
+                $files[$tgt] = $tgtArray;
+            }
+            asort($files[$tgt], SORT_NUMERIC);
+        }
+        foreach ($files as $key => $ary) {
+            foreach ($ary as $file) {
+                $tgtFile = $cwd . '/' . $key . '/' . $file;
+                echo('<p>Processing "' . $key . '" ->' . $file . '</p>');
+                $contents = file_get_contents($tgtFile);
+                $json = mb_convert_encoding($contents, 'UTF8');
+                $jsonarr = json_decode($json, true);
+            }
+        }
+        ?>
+    </div>
 </body>
 
 </html>
