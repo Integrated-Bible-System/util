@@ -64,7 +64,6 @@
                     asort($files[$tgt], SORT_NUMERIC);
                 }
                 foreach ($files as $key => $ary) {
-                    $joinedJsonArray[$key] = [];
                     foreach ($ary as $file) {
                         $tgtFile = $cwd . '/' . $key . '/' . $file;
                         $path_parts = pathinfo($tgtFile);
@@ -73,19 +72,23 @@
                         $contents = file_get_contents($tgtFile);
                         $json = mb_convert_encoding($contents, 'UTF8');
                         $jsonarr = json_decode($json, true);
-                        $joinedJsonArray[$key] += $jsonarr;
                         $outfile_fullpath = $path_parts['dirname'] . '/csv/' . $path_parts['filename'] . '.csv';
-                        $fp = fopen($outfile_fullpath, 'w');
-                        foreach ($joinedJsonArray[$key] as $jkey => $jary) {
-                            $line = array();
-                            foreach ($jary as $ikey => $ival) {
-                                $line[] = $ival;
+                        //$fp = fopen($outfile_fullpath, 'w');
+                        $line = "";
+                        foreach ($jsonarr as $jkey => $jval) {
+                            //var_dump($jval);
+                            //echo('<hr><br>');
+                            foreach ($jval as $ikey => $ival) {
+                                //$line = ""
+                                //var_dump($line);
+                                //echo('<br>');
                             }
-                            fputcsv($fp, $line, ',', '"', "\\");
+                            //fputcsv($fp, $line, ',', '"', "\\");
+                            $line = "";
                         }
-                        fclose($fp);
-                        $outfilename = $path_parts['filename'] . '.csv';
-                        echo('<p>File ' . $outfilename . ' was created</p>');
+                        //fclose($fp);
+                        //$outfilename = $path_parts['filename'] . '.csv';
+                        //echo('<p>File ' . $outfilename . ' was created</p>');
                     }
                 }
                 ?>
