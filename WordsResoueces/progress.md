@@ -12,11 +12,10 @@
     - Data type will be **TEXT**.
 - strongs_number
 
-pronunciation
-unicode
-translit
-definition
-strongs_number
+pronunciation VARCHAR(64) NULL
+unicode VARCHAR(64) NULL
+translit VARCHAR(64) NULL
+definition TEXT NULL
+strongs_number VARCHAR(8) PK
 
-greekLexicon
-hebrewLexicon
+Lexicon done.

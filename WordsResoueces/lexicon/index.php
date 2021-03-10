@@ -35,6 +35,13 @@
                 $targets = array();
                 $tagetDirs = array();
                 $files = scandir($cwd);
+                $pdo_options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_EMULATE_PREPARES => false];
+                $dsn = 'mysql:host=localhost;dbname=BibleDictionary;charset=utf8mb4';
+                try {
+                    $pdo = new PDO($dsn, 'bibleadmin', 'uqEd2fmLk4QvXfX9', $pdo_options);
+                } catch (PDOException $e) {
+                    exit('データベース接続失敗。' . $e->getMessage());
+                }
                 foreach ($files as $val) {
                     if ($val !== '.' && $val !== '..' && is_dir($val) && $val !== 'css') {
                         array_push($targets, $val);
@@ -74,23 +81,23 @@
                         $jsonarr = json_decode($json, true);
                         $outfile_fullpath = $path_parts['dirname'] . '/csv/' . $path_parts['filename'] . '.csv';
                         //$fp = fopen($outfile_fullpath, 'w');
-                        $line = "";
+                        $table_name = $key . 'Lexicon';
+                        $column_names = "(pronunciation, unicode, translit, definition, strongs_number)";
+                        $bind_names = "(:pro, :uni, :tran, :def, :strong)";
                         foreach ($jsonarr as $jkey => $jval) {
-                            //var_dump($jval);
-                            //echo('<hr><br>');
-                            foreach ($jval as $ikey => $ival) {
-                                //$line = ""
-                                //var_dump($line);
-                                //echo('<br>');
-                            }
-                            //fputcsv($fp, $line, ',', '"', "\\");
-                            $line = "";
+                            $values_array = array_values($jval);
+                            //try {
+                                $stmt = $pdo -> prepare("INSERT INTO $table_name $column_names VALUES $bind_names");
+                                $stmt -> bindParam(':pro', $values_array[0], PDO::PARAM_STR);
+                                $stmt -> bindParam(':uni', $values_array[1], PDO::PARAM_STR);
+                                $stmt -> bindParam(':tran', $values_array[2], PDO::PARAM_STR);
+                                $stmt -> bindParam(':def', $values_array[3], PDO::PARAM_STR);
+                                $stmt -> bindParam(':strong', $values_array[4], PDO::PARAM_STR);
+                                $stmt -> execute();
                         }
-                        //fclose($fp);
-                        //$outfilename = $path_parts['filename'] . '.csv';
-                        //echo('<p>File ' . $outfilename . ' was created</p>');
                     }
                 }
+                $dsn = null;
                 ?>
             </div>
         </div>
