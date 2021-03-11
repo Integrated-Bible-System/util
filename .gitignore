@@ -188,6 +188,3 @@ dist
 
 # and uncomment the following lines
 .pnp.*
-
-# CSV files.
-*.csv
