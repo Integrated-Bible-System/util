@@ -9,12 +9,12 @@
 </head>
 
 <body>
-<?php
-$dsn='mysql:host=localhost;dbname=BibleDictionary;charset=utf8'
-$user='bibleadmin';
-$pw='uqEd2fmLk4QvXfX9';
+  <?php
+$dsn = 'mysql:host=localhost;dbname=BibleDictionary;charset=utf8';
+$user = 'bibleadmin';
+$pw = 'uqEd2fmLk4QvXfX9';
 try {
-  // DBへ接続
+    // DBへ接続
   $pdo = new PDO($dsn, $user, $pw);
   // Static Place Holderを利用する
   $pdo-> setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
@@ -48,7 +48,7 @@ try {
 } catch (PDOException $e) {
   $errArray = $stmt->errorInfo();
   $errmsg = 'PDOException is ' . $e->getMessage() . ' and MySQL driver says "' . $errArray[2] . '"';
-  exit('Database error occured!', $errmsg);
+  exit('Database error occured!' . $errmsg);
 }
 ?>
 </body>
