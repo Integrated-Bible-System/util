@@ -1,0 +1,16 @@
+{
+  "name": "apibible",
+  "version": "0.1.0",
+  "description": "API.Bible experimental",
+  "main": "index.js",
+  "repository": "https://github.com/Integrated-Bible-System/util.git",
+  "author": "Masaru Kitajima",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "4.5.3",
+    "bootstrap-vue": "^2.21.2",
+    "portal-vue": "^2.1.7",
+    "vue": "^2.6.12"
+  }
+}
